@@ -8,6 +8,7 @@ function throwError(label) {
 
 
 
+
   throw new Error(`Ты не передал ${label}`);
 }
 
