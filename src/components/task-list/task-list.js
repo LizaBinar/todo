@@ -5,12 +5,6 @@ import { Component } from 'react';
 import Task from '../task/task';
 
 function throwError(label) {
-
-
-
-
-
-
   throw new Error(`Ты не передал ${label}`);
 }
 
