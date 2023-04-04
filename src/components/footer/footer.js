@@ -1,6 +1,7 @@
 import './footer.css';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import TasksFilter from '../tasks-filter/tasks-filter';
 
 function throwError(label) {

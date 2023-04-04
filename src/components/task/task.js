@@ -26,6 +26,7 @@ class Task extends Component {
   };
 
   render() {
+    console.log(1);
     const completedClass = this.props.item.completed ? 'completed' : null;
 
     const makeLabel = () => (

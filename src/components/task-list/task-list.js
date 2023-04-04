@@ -1,6 +1,7 @@
 import './task-list.css';
 import PropTypes from 'prop-types';
 import { Component } from 'react';
+
 import Task from '../task/task';
 
 function throwError(label) {

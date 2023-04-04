@@ -1,53 +1,58 @@
 {
-  "extends": [
-    "airbnb/base",
-    "eslint:recommended",
-    "plugin:import/errors",
-    "plugin:react/recommended",
-    "plugin:jsx-a11y/recommended"
-  ],
-  "plugins": [
-    "react",
-    "import",
-    "jsx-a11y"
-  ],
-  "rules": {
-    "no-console": "error",
-    "react/prop-types": 0,
-    "indent": [
-      "error",
-      2
-    ],
-    "linebreak-style": 1,
-    "quotes": [
-      "error",
-      "double"
-    ],
-    "semi": "off",
-    "react/jsx-uses-react": "off",
-    "react/react-in-jsx-scope": "off",
-    "jsx-a11y/no-autofocus": [
-      2,
-      {
-        "ignoreNonDOM": true
-      }
-    ]
+  "env": {
+    "browser": true,
+    "es2022": true
   },
+  "ignorePatterns": ["node_modules", "dist", "build"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
   "parserOptions": {
+
+    "parser": "@babel/eslint-parser",
+    "requireConfigFile": false,
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": "latest",
+    "ecmaVersion": 2022,
     "sourceType": "module"
   },
-  "env": {
-    "es2022": true,
-    "browser": true,
-    "node": true
+  "plugins": ["react", "prettier", "import"],
+  "rules": {
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "prettier/prettier": "error",
+    "linebreak-style": [0, "unix"],
+    "quotes": ["error", "single"],
+    "semi": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": 0,
+    "import/no-unresolved": [2, { "caseSensitive": false }],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "import/order": [
+      2,
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ],
+        "newlines-between": "always"
+      }
+    ]
   },
   "settings": {
-    "react": {
-      "version": "detect"
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
+        "moduleDirectory": ["node_modules", "src/"]
+      }
     }
   }
 }
