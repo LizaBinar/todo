@@ -23,6 +23,7 @@ class NewTaskForm extends Component {
     event.preventDefault();
     const input = event.target.firstElementChild;
     if (goodInputValue(input.value)) {
+      console.log('onSubmit');
       this.props.addTask(input.value);
       input.value = '';
     }
@@ -31,7 +32,13 @@ class NewTaskForm extends Component {
   render() {
     return (
       <form onSubmit={this.onSubmit.bind(this)}>
-        <input className="new-todo" type="text" placeholder="What needs to be done?" />
+        <input
+          className="new-todo"
+          type="text"
+          maxLength={this.props.maxInput}
+          placeholder="What needs to be done?"
+          autoFocus
+        />
       </form>
     );
   }

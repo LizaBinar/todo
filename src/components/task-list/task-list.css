@@ -123,10 +123,6 @@ li .icon-edit:after {
   content: '✎';
 }
 
-li .edit {
-  display: none;
-}
-
 li.editing:last-child {
   margin-bottom: -1px;
 }

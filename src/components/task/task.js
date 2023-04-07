@@ -3,6 +3,8 @@ import './task.css';
 import PropTypes from 'prop-types';
 import { Component } from 'react';
 
+// import EditTask from '../edit-task';
+
 function throwError(label) {
   throw new Error(`Ты не передал ${label}`);
 }
@@ -26,7 +28,6 @@ class Task extends Component {
   };
 
   render() {
-    console.log(1);
     const completedClass = this.props.item.completed ? 'completed' : null;
 
     const makeLabel = () => (
@@ -51,7 +52,7 @@ class Task extends Component {
           onClick={this.props.onCompleted.bind(this)}
         />
         {makeLabel()}
-        <button className="icon icon-edit"></button>
+        <button className="icon icon-edit" onClick={this.props.onEditTask}></button>
         <button className="icon icon-destroy" onClick={this.props.onDeleted}></button>
       </div>
     );

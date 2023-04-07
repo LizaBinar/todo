@@ -1,0 +1,34 @@
+.edit {
+    position: relative;
+    margin-left: 51px;
+    font-size: 24px;
+    font-family: inherit;
+    font-weight: inherit;
+    line-height: 1.4em;
+    color: inherit;
+    padding: 6px;
+    border: 1px solid #999;
+    box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 59px;
+}
+
+.edit__input {
+    min-height: 24px;
+    width: 100%;
+    margin-top: 8px;
+    border: none;
+    font-size: 24px;
+    color: #4d4d4d;
+}
+
+.edit__input:focus {
+    outline: 0;
+}
+
+.edit__input::placeholder {
+    color: #212529;
+    opacity: 0.4;
+}

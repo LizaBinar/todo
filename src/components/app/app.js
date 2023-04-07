@@ -24,6 +24,7 @@ class App extends Component {
   };
 
   idCounter = 0;
+  maxInput = 20;
 
   state = {
     todoData: [this.createTask('Drink Coffee'), this.createTask('Eat Meat'), this.createTask('Buy E-ON energy')],
@@ -32,11 +33,13 @@ class App extends Component {
 
   createTask(label) {
     this.idCounter += 1;
+
     return {
       label,
       completed: false,
       id: this.idCounter,
       dateCreated: new Date(),
+      edit: false,
     };
   }
 
@@ -72,11 +75,33 @@ class App extends Component {
     });
   };
 
+  editeTask = (id, label) => {
+    console.log(id, label);
+    this.setState(({ todoData }) => {
+      const idx = todoData.findIndex((todo) => todo.id === id);
+      const task = todoData[idx];
+      task.label = label;
+      task.edit = false;
+      return {
+        todoData: [...todoData.slice(0, idx), task, ...todoData.slice(idx + 1)],
+      };
+    });
+  };
+
   deleteCompletedTask() {
     this.state.todoData.forEach((task) => {
       if (task.completed) {
         this.deleteTask(task.id);
       }
+    });
+  }
+
+  onEditTask(id) {
+    const array = this.state.todoData;
+    const idx = array.findIndex((todo) => todo.id === id);
+    array[idx].edit = true;
+    this.setState({
+      todoData: array,
     });
   }
 
@@ -86,12 +111,15 @@ class App extends Component {
       <section className={'base-style'}>
         <AppHeader />
         <div className="todoapp">
-          <NewTaskForm addTask={this.addTask.bind(this)} />
+          <NewTaskForm addTask={this.addTask.bind(this)} maxInput={this.maxInput} />
           <section className="main">
             <TaskList
               todoData={visibleTasks}
               onDeleted={this.deleteTask.bind(this)}
+              onEditTask={this.onEditTask.bind(this)}
+              editeTask={this.editeTask.bind(this)}
               onCompleted={this.onCompleted.bind(this)}
+              maxInput={this.maxInput}
             />
             <Footer
               todoData={this.state.todoData}
