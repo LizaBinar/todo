@@ -50,5 +50,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.2.0"
   },
-  "lint-staged": ["npm run lint:fix", "npm run lint:fix", "git add"]
+  "lint-staged": {
+    "*.js": ["npm run lint:fix", "npm run lint:fix"]
+  }
 }
