@@ -31,7 +31,7 @@ class Task extends Component {
     const completedClass = this.props.item.completed ? 'completed' : null;
 
     const makeLabel = () => (
-      <label>
+      <div className="label">
         <span className="description">{this.props.item.label}</span>
         <span className="created">
           {`created ${formatDistanceToNow(this.props.item.dateCreated, {
@@ -39,7 +39,7 @@ class Task extends Component {
             addSuffix: true,
           })}`}
         </span>
-      </label>
+      </div>
     );
 
     return (

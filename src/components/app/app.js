@@ -76,7 +76,6 @@ class App extends Component {
   };
 
   editeTask = (id, label) => {
-    console.log(id, label);
     this.setState(({ todoData }) => {
       const idx = todoData.findIndex((todo) => todo.id === id);
       const task = todoData[idx];

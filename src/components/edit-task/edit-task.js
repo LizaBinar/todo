@@ -21,6 +21,7 @@ class Task extends Component {
   onSubmit(event) {
     event.preventDefault();
     if (goodInputValue(this.state.value)) {
+      event.target.blur();
       this.props.editeTask(this.state.value);
       this.setState({
         value: '',

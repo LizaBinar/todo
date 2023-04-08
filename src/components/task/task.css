@@ -31,6 +31,25 @@
   text-decoration: line-through;
 }
 
+.completed .created {
+  color: #cdcdcd;
+  text-decoration: line-through;
+}
+
+.label {
+  transition: 0.2s;
+  color: #4d4d4d;
+}
+
+.created {
+  color: gray;
+}
+
+.completed .label {
+  color: #cdcdcd;
+  text-decoration: line-through;
+}
+
 .clear-completed {
   cursor: pointer;
 }
