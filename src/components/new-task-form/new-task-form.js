@@ -13,10 +13,12 @@ function addTaskError() {
 class NewTaskForm extends Component {
   static propTypes = {
     addTask: PropTypes.func,
+    maxInput: PropTypes.number,
   };
 
   static defaultProps = {
     addTask: addTaskError,
+    maxInput: 20,
   };
 
   onSubmit(event) {

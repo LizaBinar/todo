@@ -14,6 +14,9 @@ class TaskList extends Component {
     todoData: PropTypes.arrayOf(PropTypes.object),
     onDeleted: PropTypes.func,
     onCompleted: PropTypes.func,
+    onEditTask: PropTypes.func,
+    editeTask: PropTypes.func,
+    maxInput: PropTypes.number,
   };
 
   static defaultProps = {
@@ -27,6 +30,9 @@ class TaskList extends Component {
     ],
     onDeleted: throwError.bind(this, 'onDeleted'),
     onCompleted: throwError.bind(this, 'onCompleted'),
+    onEditTask: throwError.bind(this, 'onEditTask'),
+    editeTask: throwError.bind(this, 'editeTask'),
+    maxInput: 20,
   };
 
   render() {
