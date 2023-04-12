@@ -109,7 +109,7 @@ li .icon-destroy {
 }
 
 li .icon-destroy:after {
-  content: '×';
+  /*content: '×';*/
 }
 
 li .icon-edit {
@@ -118,7 +118,7 @@ li .icon-edit {
 }
 
 li .icon-edit:after {
-  content: '✎';
+  /*content: '✎';*/
 }
 
 li.editing:last-child {

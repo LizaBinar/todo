@@ -6,11 +6,12 @@ function goodInputValue(value) {
 }
 
 class Task extends Component {
-  state = {
-    value: this.props.task.label,
-  };
-
-  value = this.state.value;
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: props.task.label,
+    };
+  }
 
   onChange(e) {
     this.setState({
@@ -20,9 +21,11 @@ class Task extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    if (goodInputValue(this.state.value)) {
+    const { value } = this.state;
+    const { editeTask } = this.props;
+    if (goodInputValue(value)) {
       event.target.blur();
-      this.props.editeTask(this.state.value);
+      editeTask(value);
       this.setState({
         value: '',
       });
@@ -30,6 +33,8 @@ class Task extends Component {
   }
 
   render() {
+    const { maxInput } = this.props;
+    const { value } = this.state;
     return (
       <div className="edit">
         <form onSubmit={this.onSubmit.bind(this)}>
@@ -37,10 +42,9 @@ class Task extends Component {
             type="text"
             className="edit__input"
             placeholder={this.value}
-            maxLength={this.props.maxInput}
-            autoFocus
+            maxLength={maxInput}
             onChange={this.onChange.bind(this)}
-            value={this.state.value}
+            value={value}
           />
         </form>
       </div>

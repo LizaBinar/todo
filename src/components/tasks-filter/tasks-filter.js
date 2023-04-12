@@ -1,13 +1,13 @@
 import './tasks-filter.css';
 
-const TasksFilter = (props) => {
-  const selectedClass = props.selected ? 'selected' : null;
+function TasksFilter({ children, selected, onFilterChanged }) {
+  const selectedClass = selected ? 'selected' : null;
 
   return (
-    <button className={`button ${selectedClass}`} onClick={() => props.onFilterChanged()}>
-      {props.children}
+    <button type="button" className={`button ${selectedClass}`} onClick={() => onFilterChanged()}>
+      {children}
     </button>
   );
-};
+}
 
 export default TasksFilter;

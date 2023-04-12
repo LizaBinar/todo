@@ -6,32 +6,33 @@ import NewTaskForm from '../new-task-form';
 import TaskList from '../task-list';
 import Footer from '../footer/footer';
 
+const filterTasks = (tasks, filter) => {
+  switch (filter) {
+    case 'all':
+      return tasks;
+    case 'active':
+      return tasks.filter((task) => !task.completed);
+    case 'completed':
+      return tasks.filter((task) => task.completed);
+    default:
+      return tasks;
+  }
+};
+
 class App extends Component {
-  // static propTypes = {} // Нет пропсов
-  // static defaultProps = {} // Нет пропсов
-
-  static filterTasks = (tasks, filter) => {
-    switch (filter) {
-      case 'all':
-        return tasks;
-      case 'active':
-        return tasks.filter((task) => !task.completed);
-      case 'completed':
-        return tasks.filter((task) => task.completed);
-      default:
-        return tasks;
-    }
-  };
-
   idCounter = 0;
+
   maxInput = 20;
 
-  state = {
-    todoData: [this.createTask('Drink Coffee'), this.createTask('Eat Meat'), this.createTask('Buy E-ON energy')],
-    filter: 'all', // all active completed
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      todoData: [this.createTask('Drink Coffee'), this.createTask('Eat Meat'), this.createTask('Buy E-ON energy')],
+      filter: 'all', // all active completed
+    };
+  }
 
-  createTask(label) {
+  createTask = (label) => {
     this.idCounter += 1;
 
     return {
@@ -41,14 +42,14 @@ class App extends Component {
       dateCreated: new Date(),
       edit: false,
     };
-  }
+  };
 
-  addTask(label) {
+  addTask = (label) => {
     const task = this.createTask(label);
     this.setState((state) => ({
       todoData: [...state.todoData, task],
     }));
-  }
+  };
 
   onCompleted = (id) => {
     this.setState(({ todoData }) => {
@@ -60,11 +61,11 @@ class App extends Component {
     });
   };
 
-  onFilterChanged(name) {
+  onFilterChanged = (name) => {
     this.setState({
       filter: name,
     });
-  }
+  };
 
   deleteTask = (id) => {
     this.setState(({ todoData }) => {
@@ -87,44 +88,46 @@ class App extends Component {
     });
   };
 
-  deleteCompletedTask() {
-    this.state.todoData.forEach((task) => {
+  deleteCompletedTask = () => {
+    const { todoData } = this.state;
+    todoData.forEach((task) => {
       if (task.completed) {
         this.deleteTask(task.id);
       }
     });
-  }
+  };
 
-  onEditTask(id) {
-    const array = this.state.todoData;
-    const idx = array.findIndex((todo) => todo.id === id);
-    array[idx].edit = true;
+  onEditTask = (id) => {
+    const { todoData } = this.state;
+    const idx = todoData.findIndex((todo) => todo.id === id);
+    todoData[idx].edit = true;
     this.setState({
-      todoData: array,
+      todoData,
     });
-  }
+  };
 
   render() {
-    const visibleTasks = App.filterTasks(this.state.todoData, this.state.filter);
+    const { todoData, filter } = this.state;
+    const visibleTasks = filterTasks(todoData, filter);
     return (
-      <section className={'base-style'}>
+      <section className="base-style">
         <AppHeader />
         <div className="todoapp">
-          <NewTaskForm addTask={this.addTask.bind(this)} maxInput={this.maxInput} />
+          <NewTaskForm addTask={this.addTask} maxInput={this.maxInput} />
           <section className="main">
             <TaskList
               todoData={visibleTasks}
-              onDeleted={this.deleteTask.bind(this)}
-              onEditTask={this.onEditTask.bind(this)}
-              editeTask={this.editeTask.bind(this)}
-              onCompleted={this.onCompleted.bind(this)}
+              onDeleted={this.deleteTask}
+              onEditTask={this.onEditTask}
+              editeTask={this.editeTask}
+              onCompleted={this.onCompleted}
               maxInput={this.maxInput}
             />
             <Footer
-              todoData={this.state.todoData}
-              filter={this.state.filter}
-              onFilterChanged={this.onFilterChanged.bind(this)}
-              deleteCompletedTask={this.deleteCompletedTask.bind(this)}
+              todoData={todoData}
+              filter={filter}
+              onFilterChanged={this.onFilterChanged}
+              deleteCompletedTask={this.deleteCompletedTask}
             />
           </section>
         </div>
