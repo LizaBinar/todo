@@ -51,6 +51,6 @@
     "lint-staged": "^13.2.0"
   },
   "lint-staged": {
-    "*.js": ["npm run lint:fix", "npm run lint:fix"]
+    "*.js": ["npm run lint:fix", "npm run format"]
   }
 }
