@@ -1,0 +1,13 @@
+.timer {
+  font-size: 13px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  color: gray;
+  /*text-decoration: none;*/
+}
+
+.timer__btn {
+  color: #cc9a9a;
+  cursor: pointer;
+}

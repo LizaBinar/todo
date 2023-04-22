@@ -45,11 +45,6 @@
   color: gray;
 }
 
-.completed .label {
-  color: #cdcdcd;
-  text-decoration: line-through;
-}
-
 .clear-completed {
   cursor: pointer;
 }

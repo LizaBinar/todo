@@ -19,6 +19,12 @@ const filterTasks = (tasks, filter) => {
   }
 };
 
+const getMilisec = (sec = 0, min = 0) => {
+  let res = sec * 1000;
+  res += min * 60000;
+  return res;
+};
+
 class App extends Component {
   idCounter = 0;
 
@@ -27,25 +33,34 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      todoData: [this.createTask('Drink Coffee'), this.createTask('Eat Meat'), this.createTask('Buy E-ON energy')],
+      todoData: [
+        this.createTask('Drink Coffee', 10000),
+        this.createTask('Eat Meat', 10000),
+        this.createTask('Buy E-ON', 10000),
+      ],
       filter: 'all', // all active completed
     };
   }
 
-  createTask = (label) => {
+  createTask = (label, timeBase) => {
     this.idCounter += 1;
 
-    return {
+    const res = {
       label,
+      timeBase,
       completed: false,
       id: this.idCounter,
       dateCreated: new Date(),
       edit: false,
     };
+
+    res.time = Date.now() + res.timeBase;
+    return res;
   };
 
-  addTask = (label) => {
-    const task = this.createTask(label);
+  addTask = (label, min, sec) => {
+    const timeBase = getMilisec(sec, min);
+    const task = this.createTask(label, timeBase);
     this.setState((state) => ({
       todoData: [...state.todoData, task],
     }));
@@ -81,6 +96,7 @@ class App extends Component {
       const idx = todoData.findIndex((todo) => todo.id === id);
       const task = todoData[idx];
       task.label = label;
+      task.time = Date.now() + task.timeBase;
       task.edit = false;
       return {
         todoData: [...todoData.slice(0, idx), task, ...todoData.slice(idx + 1)],
@@ -106,6 +122,17 @@ class App extends Component {
     });
   };
 
+  onTick = (total, id) => {
+    this.setState(({ todoData }) => {
+      const idx = todoData.findIndex((todo) => todo.id === id);
+      const task = todoData[idx];
+      task.timeBase = total;
+      return {
+        todoData: [...todoData.slice(0, idx), task, ...todoData.slice(idx + 1)],
+      };
+    });
+  };
+
   render() {
     const { todoData, filter } = this.state;
     const visibleTasks = filterTasks(todoData, filter);
@@ -122,6 +149,7 @@ class App extends Component {
               editeTask={this.editeTask}
               onCompleted={this.onCompleted}
               maxInput={this.maxInput}
+              onTick={this.onTick}
             />
             <Footer
               todoData={todoData}

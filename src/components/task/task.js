@@ -2,30 +2,40 @@ import { formatDistanceToNow } from 'date-fns';
 import './task.css';
 import PropTypes from 'prop-types';
 
+import Timer from '../timer';
+
 function throwError(label) {
   throw new Error(`Ты не передал ${label}`);
 }
 
-function Task({ completed, label, dateCreated, onCompleted, onEditTask, onDeleted }) {
-  const completedClass = completed ? 'completed' : null;
-
-  const makeLabel = () => (
+function MakeBody({ label, dateCreated, time, onTick }) {
+  return (
     <div className="label">
-      <span className="description">{label}</span>
-      <span className="created">
+      <div className="description">{label}</div>
+      <Timer time={time} onTick={onTick} />
+      <div className="created">
         {`created ${formatDistanceToNow(dateCreated, {
           includeSeconds: true,
           addSuffix: true,
         })}`}
-      </span>
+      </div>
     </div>
   );
+}
+
+function Task(props) {
+  const { id, completed, label, dateCreated, time, onCompleted, onEdit, onDeleted, onTick } = props;
+  const completedClass = completed ? 'completed' : null;
+
+  const onTickManage = (total) => {
+    onTick(total, id);
+  };
 
   return (
     <div className={`view ${completedClass}`}>
       <input className="toggle" type="checkbox" checked={completed} readOnly onClick={onCompleted.bind(this)} />
-      {makeLabel()}
-      <button type="button" className="icon icon-edit" onClick={onEditTask} aria-label="">
+      <MakeBody label={label} dateCreated={dateCreated} time={time} onTick={onTickManage} />
+      <button type="button" className="icon icon-edit" onClick={onEdit} aria-label="">
         ✎
       </button>
       <button type="button" className="icon icon-destroy" onClick={onDeleted} aria-label="">
