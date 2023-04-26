@@ -8,11 +8,17 @@ function throwError(label) {
   throw new Error(`Ты не передал ${label}`);
 }
 
-function MakeBody({ label, dateCreated, time, onTick }) {
+function MakeBody({ label, dateCreated, time, start, onStart, onStop }) {
   return (
     <div className="label">
       <div className="description">{label}</div>
-      <Timer time={time} onTick={onTick} />
+      <Timer
+        time={time}
+        // onTick={onTick}
+        start={start}
+        onStart={onStart}
+        onStop={onStop}
+      />
       <div className="created">
         {`created ${formatDistanceToNow(dateCreated, {
           includeSeconds: true,
@@ -24,17 +30,33 @@ function MakeBody({ label, dateCreated, time, onTick }) {
 }
 
 function Task(props) {
-  const { id, completed, label, dateCreated, time, onCompleted, onEdit, onDeleted, onTick } = props;
+  const { id, completed, label, dateCreated, time, onCompleted, onEdit, onDeleted, start, onStart, onStop } = props;
   const completedClass = completed ? 'completed' : null;
 
-  const onTickManage = (total) => {
-    onTick(total, id);
+  // const onTickManage = (total) => {
+  //   onTick(total, id);
+  // };
+
+  const onStartManage = () => {
+    onStart(id);
+  };
+
+  const onStopManage = () => {
+    onStop(id);
   };
 
   return (
     <div className={`view ${completedClass}`}>
       <input className="toggle" type="checkbox" checked={completed} readOnly onClick={onCompleted.bind(this)} />
-      <MakeBody label={label} dateCreated={dateCreated} time={time} onTick={onTickManage} />
+      <MakeBody
+        label={label}
+        dateCreated={dateCreated}
+        time={time}
+        // onTick={onTickManage}
+        start={start}
+        onStart={onStartManage}
+        onStop={onStopManage}
+      />
       <button type="button" className="icon icon-edit" onClick={onEdit} aria-label="">
         ✎
       </button>

@@ -8,11 +8,8 @@ function throwError(label) {
   throw new Error(`Ты не передал ${label}`);
 }
 
-function TaskList({ todoData, onDeleted, onCompleted, onEditTask, maxInput, editeTask, onTick }) {
-  const onTickManager = (total, id) => {
-    onTick(total, id);
-  };
-
+function TaskList(props) {
+  const { todoData, onDeleted, onCompleted, onEditTask, maxInput, editeTask, onStart, onStop } = props;
   const elements = todoData.map((item) => {
     if (item.edit === false) {
       return (
@@ -21,12 +18,15 @@ function TaskList({ todoData, onDeleted, onCompleted, onEditTask, maxInput, edit
             id={item.id}
             completed={item.completed}
             label={item.label}
+            start={item.start}
             dateCreated={item.dateCreated}
-            time={item.time}
+            time={Date.now() + item.timeBase}
             onDeleted={() => onDeleted(item.id)}
             onCompleted={() => onCompleted(item.id)}
             onEdit={() => onEditTask(item.id)}
-            onTick={onTickManager}
+            onStart={onStart}
+            onStop={onStop}
+            // onTick={onTickManager}
           />
         </li>
       );

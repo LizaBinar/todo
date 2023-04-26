@@ -42,28 +42,44 @@ class App extends Component {
     };
   }
 
-  createTask = (label, timeBase) => {
-    this.idCounter += 1;
+  componentDidMount() {
+    document.addEventListener('keydown', ({ key }) => {
+      if (key === 'Escape') {
+        this.cancelEditing();
+      }
+    });
+    document.addEventListener('mousedown', ({ target }) => {
+      if (!target.classList.contains('edit-element')) {
+        this.cancelEditing();
+      }
+    });
+  }
 
-    const res = {
-      label,
-      timeBase,
-      completed: false,
-      id: this.idCounter,
-      dateCreated: new Date(),
-      edit: false,
-    };
-
-    res.time = Date.now() + res.timeBase;
-    return res;
+  start = (id) => {
+    const { todoData } = this.state;
+    const task = todoData[id];
+    if (!task.start) {
+      task.start = true;
+      task.mainTimer = setInterval(() => {
+        if (task.timeBase <= 0) {
+          clearInterval(task.mainTimer);
+        }
+        task.timeBase -= 1000; // Уменьшаем таймер
+        todoData[id] = task;
+        // this.setState({
+        //   todoData: todoData,
+        // });
+      }, 1000);
+    }
   };
 
-  addTask = (label, min, sec) => {
-    const timeBase = getMilisec(sec, min);
-    const task = this.createTask(label, timeBase);
-    this.setState((state) => ({
-      todoData: [...state.todoData, task],
-    }));
+  stop = (id) => {
+    const { todoData } = this.state;
+    const task = todoData[id];
+    if (task.start) {
+      task.start = false;
+      clearInterval(task.mainTimer);
+    }
   };
 
   onCompleted = (id) => {
@@ -104,6 +120,16 @@ class App extends Component {
     });
   };
 
+  cancelEditing = () => {
+    this.setState(({ todoData }) => {
+      todoData.map((task) => {
+        task.edit = false;
+        return task;
+      });
+      return { todoData };
+    });
+  };
+
   deleteCompletedTask = () => {
     const { todoData } = this.state;
     todoData.forEach((task) => {
@@ -122,15 +148,26 @@ class App extends Component {
     });
   };
 
-  onTick = (total, id) => {
-    this.setState(({ todoData }) => {
-      const idx = todoData.findIndex((todo) => todo.id === id);
-      const task = todoData[idx];
-      task.timeBase = total;
-      return {
-        todoData: [...todoData.slice(0, idx), task, ...todoData.slice(idx + 1)],
-      };
-    });
+  addTask = (label, min, sec) => {
+    const timeBase = getMilisec(sec, min);
+    const task = this.createTask(label, timeBase);
+    this.setState((state) => ({
+      todoData: [...state.todoData, task],
+    }));
+  };
+
+  createTask = (label, timeBase) => {
+    const res = {
+      label,
+      timeBase,
+      start: false,
+      completed: false,
+      id: this.idCounter,
+      dateCreated: new Date(),
+      edit: false,
+    };
+    this.idCounter += 1;
+    return res;
   };
 
   render() {
@@ -149,7 +186,9 @@ class App extends Component {
               editeTask={this.editeTask}
               onCompleted={this.onCompleted}
               maxInput={this.maxInput}
-              onTick={this.onTick}
+              onStart={this.start}
+              onStop={this.stop}
+              // onTick={this.onTick}
             />
             <Footer
               todoData={todoData}

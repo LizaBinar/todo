@@ -36,11 +36,11 @@ class Task extends Component {
     const { maxInput } = this.props;
     const { value } = this.state;
     return (
-      <div className="edit">
-        <form onSubmit={this.onSubmit.bind(this)}>
+      <div className="edit edit-element">
+        <form onSubmit={this.onSubmit.bind(this)} className="edit-element">
           <input
             type="text"
-            className="edit__input"
+            className="edit__input edit-element"
             placeholder={this.value}
             maxLength={maxInput}
             onChange={this.onChange.bind(this)}
