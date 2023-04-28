@@ -26,11 +26,11 @@ function TaskList(props) {
             onEdit={() => onEditTask(item.id)}
             onStart={onStart}
             onStop={onStop}
-            // onTick={onTickManager}
           />
         </li>
       );
     }
+
     const { id } = item;
     return (
       <li key={id}>

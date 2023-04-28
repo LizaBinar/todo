@@ -12,13 +12,7 @@ function MakeBody({ label, dateCreated, time, start, onStart, onStop }) {
   return (
     <div className="label">
       <div className="description">{label}</div>
-      <Timer
-        time={time}
-        // onTick={onTick}
-        start={start}
-        onStart={onStart}
-        onStop={onStop}
-      />
+      <Timer time={time} start={start} onStart={onStart} onStop={onStop} />
       <div className="created">
         {`created ${formatDistanceToNow(dateCreated, {
           includeSeconds: true,
@@ -52,7 +46,6 @@ function Task(props) {
         label={label}
         dateCreated={dateCreated}
         time={time}
-        // onTick={onTickManage}
         start={start}
         onStart={onStartManage}
         onStop={onStopManage}

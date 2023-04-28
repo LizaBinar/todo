@@ -6,7 +6,6 @@ function Completionist() {
   return <span>No-time!</span>;
 }
 
-// Renderer callback with condition
 const renderer = ({ minutes, seconds, completed }) => {
   if (completed) {
     return <Completionist />;
@@ -50,17 +49,6 @@ class Timer extends Component {
     });
   };
 
-  // onTick = ({ total }) => {
-  //   const { onTick } = this.props;
-  //   console.log(total);
-  //   onTick(total);
-  // };
-
-  // onComplete = () => {
-  //   const { onTick } = this.props;
-  //   onTick(0);
-  // };
-
   render() {
     const { time, start } = this.state;
     const { setRef, onComplete } = this;
@@ -72,14 +60,7 @@ class Timer extends Component {
         <button className="timer__btn" type="submit" onClick={this.onStop}>
           ⏸
         </button>
-        <Countdown
-          ref={setRef}
-          date={time}
-          renderer={renderer}
-          autoStart={start}
-          // onTick={onTick}
-          onComplete={onComplete}
-        />
+        <Countdown ref={setRef} date={time} renderer={renderer} autoStart={start} onComplete={onComplete} />
       </div>
     );
   }

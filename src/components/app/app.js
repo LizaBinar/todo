@@ -1,5 +1,6 @@
 import './app.css';
 import { Component } from 'react';
+import { nanoid } from 'nanoid';
 
 import AppHeader from '../app-header';
 import NewTaskForm from '../new-task-form';
@@ -19,6 +20,19 @@ const filterTasks = (tasks, filter) => {
   }
 };
 
+const createTask = (label, timeBase) => {
+  const res = {
+    label,
+    timeBase,
+    start: false,
+    completed: false,
+    id: nanoid(3),
+    dateCreated: new Date(),
+    edit: false,
+  };
+  return res;
+};
+
 const getMilisec = (sec = 0, min = 0) => {
   let res = sec * 1000;
   res += min * 60000;
@@ -26,18 +40,12 @@ const getMilisec = (sec = 0, min = 0) => {
 };
 
 class App extends Component {
-  idCounter = 0;
-
   maxInput = 20;
 
   constructor(props) {
     super(props);
     this.state = {
-      todoData: [
-        this.createTask('Drink Coffee', 10000),
-        this.createTask('Eat Meat', 10000),
-        this.createTask('Buy E-ON', 10000),
-      ],
+      todoData: [createTask('0', 10000), createTask('1', 10000), createTask('2', 10000)],
       filter: 'all', // all active completed
     };
   }
@@ -57,7 +65,8 @@ class App extends Component {
 
   start = (id) => {
     const { todoData } = this.state;
-    const task = todoData[id];
+    const idx = todoData.findIndex((todo) => todo.id === id);
+    const task = todoData[idx];
     if (!task.start) {
       task.start = true;
       task.mainTimer = setInterval(() => {
@@ -66,16 +75,14 @@ class App extends Component {
         }
         task.timeBase -= 1000; // Уменьшаем таймер
         todoData[id] = task;
-        // this.setState({
-        //   todoData: todoData,
-        // });
       }, 1000);
     }
   };
 
   stop = (id) => {
     const { todoData } = this.state;
-    const task = todoData[id];
+    const idx = todoData.findIndex((todo) => todo.id === id);
+    const task = todoData[idx];
     if (task.start) {
       task.start = false;
       clearInterval(task.mainTimer);
@@ -150,24 +157,10 @@ class App extends Component {
 
   addTask = (label, min, sec) => {
     const timeBase = getMilisec(sec, min);
-    const task = this.createTask(label, timeBase);
+    const task = createTask(label, timeBase);
     this.setState((state) => ({
       todoData: [...state.todoData, task],
     }));
-  };
-
-  createTask = (label, timeBase) => {
-    const res = {
-      label,
-      timeBase,
-      start: false,
-      completed: false,
-      id: this.idCounter,
-      dateCreated: new Date(),
-      edit: false,
-    };
-    this.idCounter += 1;
-    return res;
   };
 
   render() {
@@ -188,7 +181,6 @@ class App extends Component {
               maxInput={this.maxInput}
               onStart={this.start}
               onStop={this.stop}
-              // onTick={this.onTick}
             />
             <Footer
               todoData={todoData}
