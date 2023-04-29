@@ -1,2 +1,2 @@
 # deploy
-https://todo-oxb5uaiyh-lizabinar.vercel.app/
+https://todo-lizabinar.vercel.app/
