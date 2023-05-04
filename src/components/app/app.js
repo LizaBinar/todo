@@ -45,22 +45,27 @@ function App() {
   const [filter, setFilter] = useState('all'); // all active completed
 
   const start = (id) => {
-    setTodoData((todoData) => {
-      const idx = todoData.findIndex((todo) => todo.id === id);
-      const task = todoData[idx];
-      if (!task.start) {
-        task.start = true;
-        task.mainTimer = setInterval(() => {
-          if (task.timeBase <= 0) {
+    const copy = [...todoData];
+    const idx = copy.findIndex((todo) => todo.id === id);
+    const task = copy[idx];
+    if (!task.start) {
+      task.start = true;
+      task.mainTimer = setInterval(() => {
+        if (task.timeBase <= 0) {
+          clearInterval(task.mainTimer);
+        }
+        task.timeBase -= 1000; // Уменьшаем таймер
+        setTodoData((todoData) => {
+          const newIdx = todoData.findIndex((todo) => todo.id === id);
+          if (todoData[newIdx]) {
+            todoData[newIdx].timeBase = task.timeBase;
+          } else {
             clearInterval(task.mainTimer);
           }
-          task.timeBase -= 1000; // Уменьшаем таймер
-          todoData[id] = task;
           return todoData;
-        }, 1000);
-      }
-      return todoData;
-    });
+        });
+      }, 1000);
+    }
   };
 
   const stop = (id) => {
@@ -136,11 +141,6 @@ function App() {
 
   const onEditTask = (id) => {
     changeStatus(id, 'edit', true);
-    // setTodoData((todoData) => {
-    //   const idx = todoData.findIndex((todo) => todo.id === id);
-    //   const newTask = { ...todoData[idx], edit: !todoData[idx].completed };
-    //   return [...todoData.slice(0, idx), newTask, ...todoData.slice(idx + 1)];
-    // });
   };
 
   const addTask = (label, min, sec) => {
@@ -153,16 +153,10 @@ function App() {
 
   useEffect(() => {
     document.addEventListener('keydown', ({ key }) => {
-      console.log(key);
       if (key === 'Escape') {
         cancelEditing();
       }
     });
-    // document.addEventListener('mousedown', ({ target }) => {
-    //   if (!target.classList.contains('edit-element')) {
-    //     cancelEditing();
-    //   }
-    // });
   }, []);
 
   const visibleTasks = filterTasks(todoData, filter);

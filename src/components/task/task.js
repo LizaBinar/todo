@@ -45,7 +45,7 @@ function Task(props) {
       <MakeBody
         label={label}
         dateCreated={dateCreated}
-        time={time}
+        time={Date.now() + time}
         start={start}
         onStart={onStartManage}
         onStop={onStopManage}

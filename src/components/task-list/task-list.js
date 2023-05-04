@@ -20,7 +20,7 @@ function TaskList(props) {
             label={item.label}
             start={item.start}
             dateCreated={item.dateCreated}
-            time={Date.now() + item.timeBase}
+            time={item.timeBase}
             onDeleted={() => onDeleted(item.id)}
             onCompleted={() => onCompleted(item.id)}
             onEdit={() => onEditTask(item.id)}
