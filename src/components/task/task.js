@@ -27,10 +27,6 @@ function Task(props) {
   const { id, completed, label, dateCreated, time, onCompleted, onEdit, onDeleted, start, onStart, onStop } = props;
   const completedClass = completed ? 'completed' : null;
 
-  // const onTickManage = (total) => {
-  //   onTick(total, id);
-  // };
-
   const onStartManage = () => {
     onStart(id);
   };
