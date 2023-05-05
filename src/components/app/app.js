@@ -51,6 +51,7 @@ function App() {
   const [filter, setFilter] = useState('all'); // all active completed
 
   const start = (id) => {
+    // таймер изолировать не получилось :(
     const copy = [...todoData];
     const idx = copy.findIndex((todo) => todo.id === id);
     const task = copy[idx];
