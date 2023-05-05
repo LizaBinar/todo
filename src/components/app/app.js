@@ -7,7 +7,7 @@ import NewTaskForm from '../new-task-form';
 import TaskList from '../task-list';
 import Footer from '../footer/footer';
 
-import changeTodoData from './my-timer-state';
+import changeTodoData from './todo-data-services';
 
 const maxInput = 20;
 
