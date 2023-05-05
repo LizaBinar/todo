@@ -1,11 +1,13 @@
 import './app.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { nanoid } from 'nanoid';
 
 import AppHeader from '../app-header';
 import NewTaskForm from '../new-task-form';
 import TaskList from '../task-list';
 import Footer from '../footer/footer';
+
+import changeTodoData from './my-timer-state';
 
 const maxInput = 20;
 
@@ -41,7 +43,11 @@ const getMilisec = (sec = 0, min = 0) => {
 };
 
 function App() {
-  const [todoData, setTodoData] = useState([createTask('0', 10000), createTask('1', 10000), createTask('2', 10000)]);
+  const [todoData, setTodoData] = useReducer(changeTodoData, [
+    createTask('0', 10000),
+    createTask('1', 10000),
+    createTask('2', 10000),
+  ]);
   const [filter, setFilter] = useState('all'); // all active completed
 
   const start = (id) => {
@@ -55,46 +61,17 @@ function App() {
           clearInterval(task.mainTimer);
         }
         task.timeBase -= 1000; // Уменьшаем таймер
-        setTodoData((todoData) => {
-          const newIdx = todoData.findIndex((todo) => todo.id === id);
-          if (todoData[newIdx]) {
-            todoData[newIdx].timeBase = task.timeBase;
-          } else {
-            clearInterval(task.mainTimer);
-          }
-          return todoData;
-        });
+        setTodoData({ func: 'start', task });
       }, 1000);
     }
   };
 
   const stop = (id) => {
-    setTodoData((todoData) => {
-      const idx = todoData.findIndex((todo) => todo.id === id);
-      const task = todoData[idx];
-      if (task.start) {
-        task.start = false;
-        clearInterval(task.mainTimer);
-      }
-      return todoData;
-    });
-  };
-
-  const changeStatus = (id, status, value) => {
-    setTodoData((todoData) => {
-      const idx = todoData.findIndex((todo) => todo.id === id);
-      const newTask = { ...todoData[idx] };
-      newTask[status] = value;
-      return [...todoData.slice(0, idx), newTask, ...todoData.slice(idx + 1)];
-    });
+    setTodoData({ func: 'stop', id });
   };
 
   const onCompleted = (id) => {
-    setTodoData((todoData) => {
-      const idx = todoData.findIndex((todo) => todo.id === id);
-      const newTask = { ...todoData[idx], completed: !todoData[idx].completed };
-      return [...todoData.slice(0, idx), newTask, ...todoData.slice(idx + 1)];
-    });
+    setTodoData({ func: 'complet', id });
   };
 
   const onFilterChanged = (name) => {
@@ -102,37 +79,20 @@ function App() {
   };
 
   const deleteTask = (id) => {
-    setTodoData((todoData) => {
-      const idx = todoData.findIndex((todo) => todo.id === id);
-      return [...todoData.slice(0, idx), ...todoData.slice(idx + 1)];
-    });
+    setTodoData({ func: 'del', id });
   };
 
   //
   const editeTask = (id, label) => {
-    setTodoData((todoData) => {
-      const idx = todoData.findIndex((todo) => todo.id === id);
-      const task = todoData[idx];
-      task.label = label;
-      task.edit = false;
-      return [...todoData.slice(0, idx), task, ...todoData.slice(idx + 1)];
-    });
+    setTodoData({ func: 'makeEdit', id, label });
   };
 
   const cancelEditing = () => {
-    setTodoData((todoData) => {
-      const tasks = [...todoData];
-      tasks.forEach((task) => {
-        task.edit = false;
-        return task;
-      });
-      return tasks;
-    });
+    setTodoData({ func: 'notEdit' });
   };
 
   const deleteCompletedTask = () => {
-    const tasks = [...todoData];
-    tasks.forEach((task) => {
+    todoData.forEach((task) => {
       if (task.completed) {
         deleteTask(task.id);
       }
@@ -140,15 +100,13 @@ function App() {
   };
 
   const onEditTask = (id) => {
-    changeStatus(id, 'edit', true);
+    setTodoData({ func: 'edit', id });
   };
 
   const addTask = (label, min, sec) => {
-    setTodoData((todoData) => {
-      const timeBase = getMilisec(sec, min);
-      const task = createTask(label, timeBase);
-      return [...todoData, task];
-    });
+    const timeBase = getMilisec(sec, min);
+    const task = createTask(label, timeBase);
+    setTodoData({ func: 'add', task });
   };
 
   useEffect(() => {
