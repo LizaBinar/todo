@@ -2,7 +2,7 @@ import { formatDistanceToNow } from 'date-fns';
 import './task.css';
 import PropTypes from 'prop-types';
 
-import Timer from '../timer';
+import Timer from '../timer/timer';
 
 function throwError(label) {
   throw new Error(`Ты не передал ${label}`);

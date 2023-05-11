@@ -1,3 +1,18 @@
+import { nanoid } from 'nanoid';
+
+export const createTask = (label, timeBase) => {
+  const res = {
+    label,
+    timeBase,
+    start: false,
+    completed: false,
+    id: nanoid(3),
+    dateCreated: new Date(),
+    edit: false,
+  };
+  return res;
+};
+
 function del(todoData, id) {
   const idx = todoData.findIndex((todo) => todo.id === id);
   return [...todoData.slice(0, idx), ...todoData.slice(idx + 1)];
@@ -53,8 +68,9 @@ const stop = (todoData, id) => {
   return todoData;
 };
 
-const changeTodoData = (todoData, obj) => {
+export const changeTodoData = (todoData, obj) => {
   const { func, task, id, label } = obj;
+  todoData = [...todoData];
   switch (func) {
     case 'add':
       return [...todoData, task];
@@ -72,9 +88,20 @@ const changeTodoData = (todoData, obj) => {
       return start(todoData, task);
     case 'stop':
       return stop(todoData, id);
+    case 'onStart':
+      const newIdx = todoData.findIndex((todo) => todo.id === task.id);
+      if (!todoData[newIdx].start) {
+        todoData[newIdx].start = true;
+        todoData[newIdx].mainTimer = setInterval(() => {
+          if (todoData[newIdx].timeBase <= 0) {
+            clearInterval(todoData[newIdx].mainTimer);
+          }
+          todoData[newIdx].timeBase -= 1000; // Уменьшаем таймер
+          return start(todoData, { func: 'start', task: todoData[newIdx] });
+        }, 1000);
+      }
+      return todoData;
     default:
       return todoData;
   }
 };
-
-export default changeTodoData;

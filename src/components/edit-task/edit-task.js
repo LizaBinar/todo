@@ -1,55 +1,40 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import './edit-task.css';
 
 function goodInputValue(value) {
   return value !== '' && /\S/.test(value);
 }
 
-class Task extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: props.task.label,
-    };
-  }
+function EditTask({ task, editeTask, maxInput }) {
+  const [value, setValue] = useState(task.label);
 
-  onChange(e) {
-    this.setState({
-      value: e.target.value,
-    });
-  }
+  const onChange = (e) => {
+    setValue(e.target.value);
+  };
 
-  onSubmit(event) {
+  const onSubmit = (event) => {
     event.preventDefault();
-    const { value } = this.state;
-    const { editeTask } = this.props;
     if (goodInputValue(value)) {
       event.target.blur();
       editeTask(value);
-      this.setState({
-        value: '',
-      });
+      setValue('');
     }
-  }
+  };
 
-  render() {
-    const { maxInput } = this.props;
-    const { value } = this.state;
-    return (
-      <div className="edit edit-element">
-        <form onSubmit={this.onSubmit.bind(this)} className="edit-element">
-          <input
-            type="text"
-            className="edit__input edit-element"
-            placeholder={this.value}
-            maxLength={maxInput}
-            onChange={this.onChange.bind(this)}
-            value={value}
-          />
-        </form>
-      </div>
-    );
-  }
+  return (
+    <div className="edit edit-element">
+      <form onSubmit={onSubmit} className="edit-element">
+        <input
+          type="text"
+          className="edit__input edit-element"
+          placeholder={value}
+          maxLength={maxInput}
+          onChange={onChange}
+          value={value}
+        />
+      </form>
+    </div>
+  );
 }
 
-export default Task;
+export default EditTask;

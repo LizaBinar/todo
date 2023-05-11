@@ -1,13 +1,12 @@
 import './app.css';
 import { useEffect, useReducer, useState } from 'react';
-import { nanoid } from 'nanoid';
 
-import AppHeader from '../app-header';
-import NewTaskForm from '../new-task-form';
-import TaskList from '../task-list';
 import Footer from '../footer/footer';
+import AppHeader from '../app-header/app-header';
+import NewTaskForm from '../new-task-form/new-task-form';
+import TaskList from '../task-list/task-list';
 
-import changeTodoData from './todo-data-services';
+import { changeTodoData, createTask } from './todo-data-services';
 
 const maxInput = 20;
 
@@ -24,18 +23,6 @@ const filterTasks = (tasks, filter) => {
   }
 };
 
-const createTask = (label, timeBase) => {
-  const res = {
-    label,
-    timeBase,
-    start: false,
-    completed: false,
-    id: nanoid(3),
-    dateCreated: new Date(),
-    edit: false,
-  };
-  return res;
-};
 const getMilisec = (sec = 0, min = 0) => {
   let res = sec * 1000;
   res += min * 60000;
@@ -51,20 +38,9 @@ function App() {
   const [filter, setFilter] = useState('all'); // all active completed
 
   const start = (id) => {
-    // таймер изолировать не получилось :(
-    const copy = [...todoData];
-    const idx = copy.findIndex((todo) => todo.id === id);
-    const task = copy[idx];
-    if (!task.start) {
-      task.start = true;
-      task.mainTimer = setInterval(() => {
-        if (task.timeBase <= 0) {
-          clearInterval(task.mainTimer);
-        }
-        task.timeBase -= 1000; // Уменьшаем таймер
-        setTodoData({ func: 'start', task });
-      }, 1000);
-    }
+    const idx = todoData.findIndex((todo) => todo.id === id);
+    const task = todoData[idx];
+    setTodoData({ func: 'onStart', task });
   };
 
   const stop = (id) => {

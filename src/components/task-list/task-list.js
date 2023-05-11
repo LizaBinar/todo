@@ -2,7 +2,7 @@ import './task-list.css';
 import PropTypes from 'prop-types';
 
 import Task from '../task/task';
-import EditTask from '../edit-task';
+import EditTask from '../edit-task/edit-task';
 
 function throwError(label) {
   throw new Error(`Ты не передал ${label}`);
