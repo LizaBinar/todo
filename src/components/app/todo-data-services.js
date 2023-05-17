@@ -69,9 +69,9 @@ const stop = (todoData, id) => {
 };
 
 export const changeTodoData = (todoData, obj) => {
-  const { func, task, id, label } = obj;
+  const { type, task, id, label } = obj;
   todoData = [...todoData];
-  switch (func) {
+  switch (type) {
     case 'add':
       return [...todoData, task];
     case 'del':
@@ -79,7 +79,7 @@ export const changeTodoData = (todoData, obj) => {
     case 'complet':
       return complet(todoData, id);
     case 'edit':
-      return changeStatus(todoData, id, func, true);
+      return changeStatus(todoData, id, type, true);
     case 'makeEdit':
       return makeEdit(todoData, id, label);
     case 'notEdit':

@@ -12,7 +12,7 @@ function MakeBody({ label, dateCreated, time, start, onStart, onStop }) {
   return (
     <div className="label">
       <div className="description">{label}</div>
-      <Timer time={time} start={start} onStart={onStart} onStop={onStop} />
+      <Timer timer={time} starter={start} onStart={onStart} onStop={onStop} />
       <div className="created">
         {`created ${formatDistanceToNow(dateCreated, {
           includeSeconds: true,

@@ -1,5 +1,5 @@
 import './timer.css';
-import { Component } from 'react';
+import { useState } from 'react';
 import Countdown from 'react-countdown';
 
 function Completionist() {
@@ -13,57 +13,40 @@ const renderer = ({ minutes, seconds, completed }) => {
   return <span>{`${minutes}:${seconds}`}</span>;
 };
 
-class Timer extends Component {
-  countdownApi = null;
+function Timer({ timer, starter, onStart, onStop }) {
+  let countdownApi = null;
+  const [time] = useState(timer);
+  const [start, setStart] = useState(starter);
 
-  constructor(props) {
-    const { time, start } = props;
-    super(props);
-    this.state = {
-      time,
-      start,
-    };
-  }
-
-  setRef = (countdown) => {
+  const setRef = (countdown) => {
     if (countdown) {
-      this.countdownApi = countdown.getApi();
+      countdownApi = countdown.getApi();
     }
   };
 
-  onStart = () => {
-    const { onStart } = this.props;
-    this.countdownApi.start();
+  const onStarter = () => {
+    countdownApi.start();
     onStart();
-    this.setState({
-      start: true,
-    });
+    setStart(true);
   };
 
-  onStop = () => {
-    const { onStop } = this.props;
-    this.countdownApi.pause();
+  const onStoper = () => {
+    countdownApi.pause();
     onStop();
-    this.setState({
-      start: false,
-    });
+    setStart(false);
   };
 
-  render() {
-    const { time, start } = this.state;
-    const { setRef, onComplete } = this;
-    return (
-      <div className="timer">
-        <button className="timer__btn" type="submit" onClick={this.onStart}>
-          ▶
-        </button>
-        <button className="timer__btn" type="submit" onClick={this.onStop}>
-          ⏸
-        </button>
-        <Countdown ref={setRef} date={time} renderer={renderer} autoStart={start} onComplete={onComplete} />
-      </div>
-    );
-  }
+  return (
+    <div className="timer">
+      <button className="timer__btn" type="submit" onClick={onStarter}>
+        ▶
+      </button>
+      <button className="timer__btn" type="submit" onClick={onStoper}>
+        ⏸
+      </button>
+      <Countdown ref={setRef} date={time} renderer={renderer} autoStart={start} />
+    </div>
+  );
 }
 
 export default Timer;

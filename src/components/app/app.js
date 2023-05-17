@@ -40,15 +40,15 @@ function App() {
   const start = (id) => {
     const idx = todoData.findIndex((todo) => todo.id === id);
     const task = todoData[idx];
-    setTodoData({ func: 'onStart', task });
+    setTodoData({ type: 'onStart', task });
   };
 
   const stop = (id) => {
-    setTodoData({ func: 'stop', id });
+    setTodoData({ type: 'stop', id });
   };
 
   const onCompleted = (id) => {
-    setTodoData({ func: 'complet', id });
+    setTodoData({ type: 'complet', id });
   };
 
   const onFilterChanged = (name) => {
@@ -56,16 +56,16 @@ function App() {
   };
 
   const deleteTask = (id) => {
-    setTodoData({ func: 'del', id });
+    setTodoData({ type: 'del', id });
   };
 
   //
   const editeTask = (id, label) => {
-    setTodoData({ func: 'makeEdit', id, label });
+    setTodoData({ type: 'makeEdit', id, label });
   };
 
   const cancelEditing = () => {
-    setTodoData({ func: 'notEdit' });
+    setTodoData({ type: 'notEdit' });
   };
 
   const deleteCompletedTask = () => {
@@ -77,13 +77,13 @@ function App() {
   };
 
   const onEditTask = (id) => {
-    setTodoData({ func: 'edit', id });
+    setTodoData({ type: 'edit', id });
   };
 
   const addTask = (label, min, sec) => {
     const timeBase = getMilisec(sec, min);
     const task = createTask(label, timeBase);
-    setTodoData({ func: 'add', task });
+    setTodoData({ type: 'add', task });
   };
 
   useEffect(() => {
@@ -95,6 +95,8 @@ function App() {
   }, []);
 
   const visibleTasks = filterTasks(todoData, filter);
+  // Например, АппХедер можно было не выносить в компонент.
+  // Согласен!
   return (
     <section className="base-style">
       <AppHeader />
