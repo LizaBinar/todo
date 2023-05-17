@@ -36,6 +36,8 @@
     "max-len": "off",
     "no-shadow": "off",
     "comma-dangle": "off",
+    "import/named":  "off",
+    "no-case-declarations": "off",
     "import/no-unresolved": [2, { "caseSensitive": false }],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "import/order": [
